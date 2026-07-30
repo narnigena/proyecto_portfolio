@@ -15,7 +15,7 @@ export function leerProyectos(){
         conectar()
         .then(conexionMongo => {
             conexion = conexionMongo;
-            let coleccion = conexion.db("proyectos").collection("proyectos");
+            let coleccion = conexion.db("portfolio").collection("proyectos");
             return coleccion.find({}).toArray();
         })
         .then( proyectos => {
@@ -30,6 +30,71 @@ export function leerProyectos(){
     });
 }
 
-leerProyectos()
-.then( x => console.log(x))
-.catch((x) => console.log(""));
+export function crearProyectos(objProyecto){
+    return new Promise((ok,ko) => {
+        let conexion = null;
+
+        conectar()
+        .then(conexionMongo => {
+            conexion = conexionMongo;
+            let coleccion = conexion.db("portfolio").collection("proyectos");
+            return coleccion.insertOne(objProyecto);
+        })
+        .then( ({insertedId}) => {
+            ok(insertedId);
+        })
+        .catch( e => ko(e))
+        .finally(() => {
+            if(conexion){
+                conexion.close();
+            }
+        });
+    });
+}
+
+
+export function actualizarProyectos(id,objCambios){//cyakqyuer combinacion
+    return new Promise((ok,ko) => {
+        let conexion = null;
+
+        conectar()
+        .then(conexionMongo => {
+            conexion = conexionMongo;
+            let coleccion = conexion.db("portfolio").collection("proyectos");
+            return coleccion.updateOne({ _id : new ObjectId(id) }, { $set : objCambios});
+        })
+        .then( ({modifiedCount,matchedCount}) => {
+            ok({modifiedCount,matchedCount});
+        })
+        .catch( e => ko(e))
+        .finally(() => {
+            if(conexion){
+                conexion.close();
+            }
+        });
+    });
+}
+
+// prueba borrar '6a57f7e542816d5ecf2625e1'
+export function borrarProyectos(id){//
+    return new Promise((ok,ko) => {
+        let conexion = null;
+
+        conectar()
+        .then(conexionMongo => {
+            conexion = conexionMongo;
+            let coleccion = conexion.db("portfolio").collection("proyectos");
+            return coleccion.deleteOne({ _id : new ObjectId(id) });
+        })
+        .then( ({deletedCount}) => {
+            ok(deletedCount);
+        })
+        .catch( e => ko(e))
+        .finally(() => {
+            if(conexion){
+                conexion.close();
+            }
+        });
+    });
+}
+
