@@ -8,7 +8,29 @@ function conectar(){
     return MongoClient.connect(process.env.MONGO_URL);
 }
 
-export function leerProyectos(){
+export function buscarUsuario(nombre){
+    return new Promise((ok,ko) => {
+        let conexion = null;
+
+        conectar()
+        .then(conexionMongo => {
+            conexion = conexionMongo;
+            let coleccion = conexion.db("portfolio").collection("usuarios");
+            return coleccion.findOne({ usuario : nombre });
+        })
+        .then( usuario => {
+            ok(usuario);
+        })
+        .catch( e => ko())
+        .finally(() => {
+            if(conexion){
+                conexion.close();
+            }
+        });
+    });
+}
+
+export function leerProyectos(usuario){
     return new Promise((ok,ko) => {
         let conexion = null;
 
@@ -16,7 +38,7 @@ export function leerProyectos(){
         .then(conexionMongo => {
             conexion = conexionMongo;
             let coleccion = conexion.db("portfolio").collection("proyectos");
-            return coleccion.find({}).toArray();
+            return coleccion.find({ usuario }).toArray();
         })
         .then( proyectos => {
             ok(proyectos);
@@ -30,7 +52,7 @@ export function leerProyectos(){
     });
 }
 
-export function crearProyectos(objProyecto){
+export function crearProyectos(objProyecto){//usuario
     return new Promise((ok,ko) => {
         let conexion = null;
 
@@ -97,4 +119,3 @@ export function borrarProyectos(id){//
         });
     });
 }
-

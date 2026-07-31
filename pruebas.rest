@@ -1,0 +1,40 @@
+GET http://localhost:4000/proyectos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiNmE2Y2FjNjM3NTNiZjQ2ZGQ4ZjliNWM5IiwiaWF0IjoxNzg1NTEyNDQyfQ.BfkJb5K2kqvZUnhgiJLTgrPmLiGtwq9-699gpWDou-Q
+
+###
+POST http://localhost:4000/login
+Content-Type: application/json
+
+{
+    "usuario" : "SOSJoaquin",
+    "password" : "SOS"
+}
+
+###
+POST http://localhost:4000/proyectos/nuevo
+Content-Type: application/json
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c3VhcmlvIjoiNmE2Y2FjNjM3NTNiZjQ2ZGQ4ZjliNWM5IiwiaWF0IjoxNzg1NTEyNDQyfQ.BfkJb5K2kqvZUnhgiJLTgrPmLiGtwq9-699gpWDou-Q
+
+{
+   "titulo":"Proyecto prueba",
+    "slug":"proyecto-prueba",
+    "categoria":"Branding",
+    "descripcion":"Proyecto de prueba para la API",
+    "imagenes":[],
+    "herramientas":["Node","MongoDB"],
+    "destacado":false,
+    "usuarioId":1,
+    "fecha":"2025"
+
+}
+
+###
+DELETE http://localhost:4000/proyectos/borrar/6a6b7c458cbc677becbd3d6f
+
+###
+PATCH http://localhost:4000/proyectos/actualizar/6a6b7a72d4ee0c0d1bd1004d
+Content-Type: application/json
+
+{
+    "fecha" : 2024
+}
