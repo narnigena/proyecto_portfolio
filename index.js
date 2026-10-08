@@ -5,7 +5,8 @@ dotenv.config();
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { buscarUsuario,leerProyectos,crearProyectos,actualizarProyectos,borrarProyectos } from "./db.js";
+import cors from "cors";
+import { buscarUsuario,leerProyectos,leerProyecto, crearProyectos,actualizarProyectos,borrarProyectos } from "./db.js";
 
 function autorizar(peticion,respuesta,siguiente){
     if(peticion.headers.authorization){
@@ -26,6 +27,8 @@ function autorizar(peticion,respuesta,siguiente){
 }
 
 const servidor = express();
+
+servidor.use(cors()); //el frontend puede hacer peticiones a localhost4000
 
 servidor.use(express.json());
 
@@ -58,20 +61,47 @@ servidor.post("/login", async (peticion,respuesta,siguiente) => {
     }
 });
 
-servidor.use(autorizar);
+//servidor.use(autorizar);
 
-servidor.get("/proyectos", async (peticion,respuesta) => {
+servidor.get("/api/proyectos", async (peticion,respuesta) => {
     try{
-        let proyectos = await leerProyectos(peticion.usuario);
+        let proyectos = await leerProyectos();
 
         respuesta.json(proyectos);
     }catch(e){
+        console.log(e);
         respuesta.sendStatus(500);
     }
    
 });
 
-servidor.post("/proyectos/nuevo", async (peticion,respuesta) => {
+servidor.get("/api/proyectos/:id", async (peticion,respuesta,siguiente) => {
+
+    if(!/^[a-f0-9]{24}$/.test(peticion.params.id)){
+        return siguiente();
+    }
+
+    try{
+
+        let proyecto = await leerProyecto(
+            peticion.params.id
+        );
+
+        if(!proyecto){
+            return siguiente();
+        }
+
+        respuesta.json(proyecto);
+
+    }catch(e){
+
+        respuesta.sendStatus(500);
+
+    }
+
+});
+
+servidor.post("/api/proyectos/nuevo",autorizar, async (peticion,respuesta) => {
         let {titulo,slug,categoria,descripcion,imagenes,herramientas,destacado,usuarioId,fecha} = peticion.body;
 
         //la validacion comprueba que los datos recibidos tienen el tipo correcto antes de guardar el proyecto en la base de datos. Si alguno no cumple , la variable será falsa y se devuelve un Bad Request 400
@@ -97,7 +127,7 @@ servidor.post("/proyectos/nuevo", async (peticion,respuesta) => {
 });
 
 
-servidor.patch("/proyectos/actualizar/:id", async (peticion,respuesta,siguiente) => {
+servidor.patch("/api/proyectos/actualizar/:id", autorizar, async (peticion,respuesta,siguiente) => {
         
         if(!/^[a-f0-9]{24}$/.test(peticion.params.id)){
             return siguiente();
@@ -118,7 +148,7 @@ servidor.patch("/proyectos/actualizar/:id", async (peticion,respuesta,siguiente)
 });
 
 
-servidor.delete("/proyectos/borrar/:id", async (peticion,respuesta,siguiente) => {
+servidor.delete("/api/proyectos/borrar/:id", async (peticion,respuesta,siguiente) => {
         if(!/^[a-f0-9]{24}$/.test(peticion.params.id)){
             return siguiente();
         }
@@ -143,5 +173,9 @@ servidor.use((peticion,respuesta) =>{
         respuesta.sendStatus(404);
 });
 
-servidor.listen(process.env.PORT);
+servidor.listen(process.env.PORT, () => {
+    console.log("API PORTFOLIO ARRANCADA");
+    console.log("Puerto:", process.env.PORT);
+    console.log("POST /login disponible"); 
+});
 

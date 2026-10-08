@@ -30,7 +30,7 @@ export function buscarUsuario(nombre){
     });
 }
 
-export function leerProyectos(usuario){
+export function leerProyectos(){
     return new Promise((ok,ko) => {
         let conexion = null;
 
@@ -38,7 +38,8 @@ export function leerProyectos(usuario){
         .then(conexionMongo => {
             conexion = conexionMongo;
             let coleccion = conexion.db("portfolio").collection("proyectos");
-            return coleccion.find({ usuario }).toArray();
+            return coleccion.find({}).toArray();
+            //dame todos los documentos de la colección proyectos
         })
         .then( proyectos => {
             ok(proyectos);
@@ -49,6 +50,46 @@ export function leerProyectos(usuario){
                 conexion.close();
             }
         });
+    });
+}
+
+export function leerProyecto(id){
+    return new Promise((ok,ko) => {
+
+        let conexion = null;
+
+        conectar()
+        .then(conexionMongo => {
+
+            conexion = conexionMongo;
+
+            let coleccion = conexion
+                .db("portfolio")
+                .collection("proyectos");
+
+            return coleccion.findOne({
+                _id: new ObjectId(id)
+            });
+
+        })
+        .then(proyecto => {
+
+            ok(proyecto);
+
+        })
+        .catch(e => {
+
+            ko(e);
+
+        })
+        .finally(() => {
+
+            if(conexion){
+                conexion.close();
+            }
+
+        });
+
     });
 }
 
