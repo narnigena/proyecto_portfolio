@@ -1,0 +1,172 @@
+.login-page {
+    min-height: calc(100vh - 80px);
+
+    display: flex;
+    align-items: center;
+
+    background: var(--background);
+}
+
+
+.login-section {
+    width: 100%;
+    max-width: var(--max-width);
+
+    margin: 0 auto;
+
+    padding: 120px var(--desktop-margin);
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+}
+
+
+.login-intro {
+    padding-top: 20px;
+}
+
+
+.login-intro h1 {
+    margin-top: 24px;
+
+    font-family: "Space Grotesk", sans-serif;
+
+    font-size: 72px;
+    line-height: 1.05;
+
+    letter-spacing: -0.04em;
+
+    color: var(--text);
+}
+
+
+.login-intro p {
+    max-width: 420px;
+
+    margin-top: 28px;
+
+    color: var(--text-secondary);
+
+    font-size: 18px;
+}
+
+
+.login-form {
+    padding: 56px;
+
+    background: var(--surface-high);
+
+    border: 1px solid var(--border);
+}
+
+
+.login-form .form-group {
+    margin-bottom: 32px;
+}
+
+
+.login-form label {
+    display: block;
+
+    margin-bottom: 10px;
+
+    color: var(--primary-dark);
+
+    font-family: "Space Grotesk", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.08em;
+}
+
+
+.login-form input {
+    width: 100%;
+
+    height: 70px;
+
+    padding: 18px 20px;
+
+    background: var(--background);
+
+    border: 1px solid var(--border);
+
+    color: var(--text);
+
+    outline: none;
+}
+
+
+.login-form input::placeholder {
+    color: #777b80;
+}
+
+
+.login-form input:focus {
+    border-color: var(--primary-dark);
+}
+
+
+.login-button {
+    width: 100%;
+
+    justify-content: center;
+
+    border: none;
+}
+
+
+.login-button:disabled {
+    opacity: 0.6;
+
+    cursor: wait;
+}
+
+
+.login-error {
+    margin-bottom: 24px;
+
+    color: #ff8c82;
+
+    font-size: 14px;
+}
+
+
+@media (max-width: 900px) {
+
+    .login-section {
+        grid-template-columns: 1fr;
+
+        gap: 50px;
+
+        padding: 80px var(--desktop-margin);
+    }
+
+
+    .login-intro h1 {
+        font-size: 56px;
+    }
+
+}
+
+
+@media (max-width: 600px) {
+
+    .login-section {
+        padding: 70px var(--mobile-margin);
+    }
+
+
+    .login-intro h1 {
+        font-size: 46px;
+    }
+
+
+    .login-form {
+        padding: 32px 20px;
+    }
+
+}

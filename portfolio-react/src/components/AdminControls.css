@@ -1,0 +1,122 @@
+.admin-controls {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 10px;
+
+    margin-top: 16px;
+
+    padding: 10px;
+
+    background: #191c1f;
+
+    border: 1px solid #554338;
+
+}
+
+
+.admin-label {
+
+    margin-right: auto;
+
+    color: #ffb782;
+
+    font-family: "Space Grotesk", sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.1em;
+
+}
+
+
+.admin-controls button {
+
+    padding: 8px 14px;
+
+    border: 1px solid #554338;
+
+    cursor: pointer;
+
+    font-family: "Space Grotesk", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    transition:
+        background 0.2s ease,
+        color 0.2s ease,
+        border-color 0.2s ease;
+
+}
+
+
+.admin-edit {
+
+    color: #e1e2e6;
+
+    background: transparent;
+
+}
+
+
+.admin-edit:hover {
+
+    color: #111417;
+
+    background: #ffb782;
+
+    border-color: #ffb782;
+
+}
+
+
+.admin-delete {
+
+    color: #ffb4ab;
+
+    background: transparent;
+
+}
+
+
+.admin-delete:hover {
+
+    color: white;
+
+    background: #93000a;
+
+    border-color: #93000a;
+
+}
+
+
+.admin-controls button:disabled {
+
+    cursor: wait;
+
+    opacity: 0.5;
+
+}
+
+
+@media (max-width: 600px) {
+
+    .admin-controls {
+
+        flex-wrap: wrap;
+
+    }
+
+    .admin-label {
+
+        width: 100%;
+
+    }
+
+}
